@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import {Link,useNavigate} from 'react-router-dom';
 import {ArrowRight,GraduationCap,ShieldCheck,Sparkles} from 'lucide-react';
-import {motion,useReducedMotion} from 'framer-motion';
 import {api} from '../utils/api';
 import {useAuth} from '../context/AuthContext';
 
@@ -40,10 +39,8 @@ export function Register(){
 }
 
 function AuthCard({eyebrow,title,subtitle,children}){
-  const reduceMotion=useReducedMotion();
-  const fade={initial:{opacity:0},animate:{opacity:1},transition:{duration:reduceMotion?0:.42,ease:[.23,1,.32,1]}};
-  return <main className="auth-page"><motion.section className="auth-shell" {...fade}>
-    <motion.div className="auth-visual" initial={{opacity:0}} animate={{opacity:1}} transition={{duration:reduceMotion?0:.32,delay:reduceMotion?0:.06,ease:[.23,1,.32,1]}}><div className="auth-visual-top"><span className="auth-logo"><GraduationCap size={19}/></span><b>GROUP9</b></div><div className="auth-visual-copy"><span className="auth-overline"><Sparkles size={13}/> TUP learning hub</span><h2>Learn with purpose.<br/><em>Grow with confidence.</em></h2><p>A focused space for lessons, practice, and progress—made for TUP students.</p></div><div className="auth-visual-art"><img src="/student-learning.svg" alt="Student learning illustration"/><span className="auth-float-card"><ShieldCheck size={16}/> Your progress, protected</span></div><div className="auth-visual-footer"><span>01</span><i/><span>06 topics · one learning journey</span></div></motion.div>
-    <motion.div className="auth-form-panel" initial={{opacity:0}} animate={{opacity:1}} transition={{duration:reduceMotion?0:.36,delay:reduceMotion?0:.12,ease:[.23,1,.32,1]}}><div className="auth-form-heading"><span className="auth-overline dark">{eyebrow}</span><h1>{title}</h1><p>{subtitle}</p></div>{children}</motion.div>
-  </motion.section></main>;
+  return <main className="auth-page"><section className="auth-shell">
+    <div className="auth-visual"><div className="auth-visual-top"><span className="auth-logo"><GraduationCap size={19}/></span><b>GROUP9</b></div><div className="auth-visual-copy"><span className="auth-overline"><Sparkles size={13}/> TUP learning hub</span><h2>Learn with purpose.<br/><em>Grow with confidence.</em></h2><p>A focused space for lessons, practice, and progress—made for TUP students.</p></div><div className="auth-visual-art"><img src="/student-learning.svg" alt="Student learning illustration"/><span className="auth-float-card"><ShieldCheck size={16}/> Your progress, protected</span></div><div className="auth-visual-footer"><span>01</span><i/><span>06 topics · one learning journey</span></div></div>
+    <div className="auth-form-panel"><div className="auth-form-heading"><span className="auth-overline dark">{eyebrow}</span><h1>{title}</h1><p>{subtitle}</p></div>{children}</div>
+  </section></main>;
 }
