@@ -1,6 +1,5 @@
 import {useEffect,useMemo,useState} from 'react';
 import {Link,useNavigate,useParams} from 'react-router-dom';
-import {motion} from 'framer-motion';
 import {Download,ExternalLink,FileText,Fullscreen,Image as ImageIcon,Presentation,ScrollText,TimerReset} from 'lucide-react';
 import {api} from '../utils/api';
 import InteractivePPT from '../components/InteractivePPT';
@@ -27,15 +26,15 @@ export default function Topic(){
   const assetUrl=file=>`${apiOrigin}${file.url}`;
   const tabs=[['notes','Notes',ScrollText],['materials','Materials',FileText],['quiz','Quiz',Presentation]];
 
-  return <motion.main className="page-shell topic-page" initial={{opacity:0}} animate={{opacity:1}} transition={{duration:.2,ease:[.23,1,.32,1]}}>
+  return <main className="page-shell topic-page">
     <Link to={`/subjects/${id}`} className="back-link">← Back to roadmap</Link>
     <header className="hero-card topic-hero topic-hero-modern"><div><span className="eyebrow">Topic {topicNum} · Lesson studio</span><h1>{topic.title}</h1><p>{topic.description}</p></div><div className="topic-meta"><span><TimerReset size={16}/> 10 min quiz</span><span><FileText size={16}/> {assets.length} assets</span>{complete&&<span>✓ Verified complete</span>}</div></header>
-    {topicNum==='2'&&<motion.section className="presentation-feature" initial={{opacity:0}} animate={{opacity:1}} transition={{duration:.2,delay:.04,ease:[.23,1,.32,1]}}><div className="section-heading"><div><span className="eyebrow">Interactive presentation</span><h2 className="section-title">Topic 2: Cybersecurity Management</h2></div><span className="text-sm text-slate-500">{slides.length} slides</span></div><InteractivePPT/></motion.section>}
+    {topicNum==='2'&&<section className="presentation-feature"><div className="section-heading"><div><span className="eyebrow">Interactive presentation</span><h2 className="section-title">Topic 2: Cybersecurity Management</h2></div><span className="text-sm text-slate-500">{slides.length} slides</span></div><InteractivePPT/></section>}
     <nav className="tab-bar modern-tab-bar" aria-label="Lesson sections">{tabs.map(([key,label,Icon])=><button key={key} onClick={()=>setTab(key)} className={tab===key?'active':''}><Icon size={17}/>{label}</button>)}</nav>
-    <motion.div key={tab} initial={{opacity:0,transform:'translateY(5px)'}} animate={{opacity:1,transform:'translateY(0)'}} transition={{duration:.18,ease:[.23,1,.32,1]}}>
+    <div>
       {tab==='notes'&&<><article className="lesson-card prose modern-content-card" dangerouslySetInnerHTML={{__html:topic.lessonContent||`<p class="empty-copy">Lesson notes for this topic are being prepared. Explore the available materials below.</p>`}}/>{topic.summaryCard&&<section className="summary-card modern-summary-card"><span className="eyebrow text-tup-crimson">Topic summary</span><p>{topic.summaryCard}</p></section>}</>}
       {tab==='materials'&&<section className="space-y-5"><div className="section-heading"><div><span className="eyebrow">Course materials</span><h2 className="section-title">Learn at your own pace</h2></div><span className="text-sm text-slate-500">{assets.length} file{assets.length!==1?'s':''}</span></div>{primary?.extension==='.pdf'&&<div className="pdf-frame modern-pdf-frame"><div className="flex items-center justify-between border-b bg-slate-50 p-3"><span className="flex items-center gap-2 font-semibold"><FileText size={17} className="text-tup-crimson"/>{primary.name}</span><a href={assetUrl(primary)} target="_blank" rel="noreferrer" className="icon-button" title="Open full screen"><Fullscreen size={17}/></a></div><iframe title={`${topic.title} PDF viewer`} src={assetUrl(primary)} className="h-[min(70vh,720px)] w-full" /></div>}{assets.length===0&&<div className="empty-card">No files have been added to this topic yet.</div>}<div className="grid gap-3 sm:grid-cols-2">{assets.map(asset=><a key={asset.path} href={assetUrl(asset)} download className="asset-card"><span className="asset-icon">{asset.extension==='.pptx'?<Presentation size={21}/>:asset.extension==='.pdf'?<FileText size={21}/>:<ImageIcon size={21}/>}</span><span className="min-w-0 flex-1"><b className="block truncate">{asset.name}</b><small>{asset.extension.replace('.','').toUpperCase()} · {formatSize(asset.size)}</small></span><Download size={17}/></a>)}</div></section>}
       {tab==='quiz'&&<section className="quiz-card modern-content-card">{quiz?<><span className="eyebrow">Knowledge check</span><h2 className="section-title">{quiz.title}</h2><p>{quiz.questionCount||quiz.questions?.length||0} questions · {Math.round((quiz.timeLimit||600)/60)} minutes · Passing score {quiz.passingScore||75}%</p><button className="btn-primary mt-5" onClick={()=>navigate(`/subjects/${id}/topic/${topicNum}/quiz`)}>Start quiz <ExternalLink size={16}/></button></>:<div className="empty-copy">The quiz for this topic is not available yet.</div>}</section>}
-    </motion.div>
-  </motion.main>;
+    </div>
+  </main>;
 }
