@@ -29,6 +29,18 @@ npm start
 
 Deploy the `client/dist` folder to Vercel or Netlify and deploy `server` to Render, Railway, or a Vercel Express wrapper. Set `VITE_API_URL` and `CLIENT_URL` to the deployed origins.
 
+### Temporary GitHub Pages deployment
+
+The client is configured to deploy automatically to:
+`https://chiffuu144.github.io/LMS-project-9/`
+
+Enable **Settings → Pages → GitHub Actions** in the repository. The workflow in
+`.github/workflows/deploy-pages.yml` then builds and publishes the `client` app on
+each push to `main`. GitHub Pages hosts only the static frontend; login, registration,
+subjects, quizzes, and uploads still require the Express API and MongoDB to be
+deployed separately. Add a repository variable named `VITE_API_URL` containing the
+public backend origin before expecting authentication to work.
+
 ## Structure
 
 - `client/src`: React pages, reusable components, auth context, router, and export utilities.
